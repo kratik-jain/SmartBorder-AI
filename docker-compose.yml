@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: suraksha
+      POSTGRES_USER: suraksha
+      POSTGRES_PASSWORD: suraksha
+    ports: ["5432:5432"]
+    volumes: [suraksha_pg:/var/lib/postgresql/data]
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://suraksha:suraksha@db:5432/suraksha
+      SURAKSHA_SECRET: replace-me-before-real-deployment
+    ports: ["8000:8000"]
+    depends_on: [db]
+volumes:
+  suraksha_pg:
